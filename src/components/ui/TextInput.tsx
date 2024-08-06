@@ -1,6 +1,6 @@
 import {generateMarginVariants} from '@/styles/variants';
 import React, {forwardRef} from 'react';
-import {TextInputProps} from 'react-native';
+import {TextInputProps, View} from 'react-native';
 import {
   NativeViewGestureHandlerProps,
   TextInput,
@@ -10,22 +10,47 @@ import {
   UnistylesVariants,
   useStyles,
 } from 'react-native-unistyles';
+import {DETypography} from './Typography';
 
 type StyleProps = {look?: UnistylesVariants<typeof stylesheet>};
-type Props = TextInputProps & NativeViewGestureHandlerProps & StyleProps;
+type Props = TextInputProps &
+  NativeViewGestureHandlerProps &
+  StyleProps & {
+    label?: string;
+  };
 
 export const DETextInput = forwardRef<TextInput, Props>((props, ref) => {
   const {look, ...rest} = props;
-  const {styles} = useStyles(stylesheet, look);
-  return <TextInput ref={ref} style={styles.input} {...rest} />;
+  const {styles, theme} = useStyles(stylesheet, look);
+  return (
+    <View>
+      {props.label && (
+        <DETypography
+          look={{
+            size: 'sm',
+            color: 'fg2',
+            mb: 2,
+          }}>
+          {props.label}
+        </DETypography>
+      )}
+      <TextInput
+        {...rest}
+        ref={ref}
+        style={styles.input}
+        placeholderTextColor={theme.colors.gray400}
+      />
+    </View>
+  );
 });
 
 const stylesheet = createStyleSheet(t => ({
   input: {
     borderWidth: 1,
-    backgroundColor: t.colors.gray700,
+    borderColor: t.colors.gray300,
     borderRadius: t.borderRadii.default,
-    fontSize: t.fontSizes.default,
+    fontSize: t.fontSizes.lg,
+    fontWeight: '500',
     variants: {
       ...generateMarginVariants(t),
       size: {
@@ -34,7 +59,7 @@ const stylesheet = createStyleSheet(t => ({
           paddingHorizontal: 12,
         },
         default: {
-          paddingVertical: 16,
+          paddingVertical: 20,
           paddingHorizontal: 20,
         },
         lg: {
@@ -56,10 +81,5 @@ const stylesheet = createStyleSheet(t => ({
         thick: {borderWidth: 2},
       },
     },
-  },
-  text: {
-    color: t.colors.gray50,
-    fontSize: t.fontSizes.default,
-    textAlign: 'center',
   },
 }));

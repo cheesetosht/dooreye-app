@@ -1,3 +1,4 @@
+import {getToken} from '@/utils/auth';
 import axios, {AxiosResponse} from 'axios';
 import Config from 'react-native-config';
 
@@ -8,6 +9,20 @@ export const dooreyeAxios = axios.create({
 });
 
 dooreyeAxios.defaults.baseURL = Config.API_BASE_URL;
+
+dooreyeAxios.interceptors.request.use(
+  async config => {
+    const token = await getToken();
+    if (token) {
+      console.log('APPEND>>');
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    throw error;
+  },
+);
 
 // Extracts data key from the Response
 const getResponseBody = (response: AxiosResponse) => response.data;

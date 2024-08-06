@@ -27,6 +27,11 @@ const fontSizes = {
   // ... add more font sizes
 } as const;
 
+const fontWeights = {
+  default: '400',
+  md: '500',
+} as const;
+
 const lineHeights = {
   none: 1,
   tight: 1.25,
@@ -37,7 +42,7 @@ const lineHeights = {
   // ... add more line heights
 };
 
-const BASE_BORDER_RADIUS = 6;
+const BASE_BORDER_RADIUS = 14;
 const borderRadii = {
   none: 0,
   sm: BASE_BORDER_RADIUS - 2,
@@ -47,7 +52,7 @@ const borderRadii = {
 };
 
 const colors = {
-  barbie: '#ff9ff3',
+  barbie: '#2f63ef',
   oak: '#1dd1a1',
   sky: '#48dbfb',
   fog: '#c8d6e5',
@@ -70,6 +75,7 @@ const baseTheme = {
   borderRadii,
   spacing,
   fontSizes,
+  fontWeights,
   lineHeights,
 };
 
@@ -80,8 +86,8 @@ export const lightTheme = {
     bg1: colors.gray50,
     bg2: colors.gray100,
     fg1: colors.gray950,
-    fg2: colors.gray900,
-    primary: colors.blood,
+    fg2: colors.gray800,
+    primary: colors.barbie,
   },
 };
 

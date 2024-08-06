@@ -28,11 +28,12 @@ export const DETypography = forwardRef<Text, Props>((props, ref) => {
 const stylesheet = createStyleSheet(t => {
   return {
     text: {
-      color: t.colors.gray50,
       variants: {
         ...generateMarginVariants(t),
         ...generatePaddingVariants(t),
         size: generateVariants(t.fontSizes, 'fontSize'),
+        fontWeight: generateVariants(t.fontWeights, 'fontWeight'),
+        color: generateVariants(t.colors, 'color'),
       },
     },
   };

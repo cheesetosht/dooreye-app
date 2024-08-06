@@ -32,7 +32,7 @@ export const checkPermission = async (
     const result = await check(permission);
     return result;
   } catch (error) {
-    console.error('Error checking permission:', error);
+    console.debug('Error checking permission:', error);
     return RESULTS.DENIED;
   }
 };
@@ -49,7 +49,7 @@ export const requestPermission = async (
     const result = await request(permission);
     return result;
   } catch (error) {
-    console.error('Error requesting permission:', error);
+    console.debug('Error requesting permission:', error);
     return RESULTS.DENIED;
   }
 };

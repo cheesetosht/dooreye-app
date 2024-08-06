@@ -5,43 +5,41 @@ import React, {
   useEffect,
   PropsWithChildren,
 } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fetcher} from '@/adapters';
 
 type AuthContextType = {
-  isLoggedIn: boolean;
-  login: () => Promise<void>;
-  logout: () => Promise<void>;
+  user: any;
+  check: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     // Check for the token when the app loads
-    checkLoginStatus();
+    check();
   }, []);
 
-  const checkLoginStatus = async () => {
-    const token = await AsyncStorage.getItem('userToken');
-    setIsLoggedIn(!!token);
-  };
-
-  const login = async () => {
-    // Perform login logic here
-    await AsyncStorage.setItem('userToken', 'dummytoken');
-    setIsLoggedIn(true);
-  };
-
-  const logout = async () => {
-    // Perform logout logic here
-    await AsyncStorage.removeItem('userToken');
-    setIsLoggedIn(false);
+  const check = () => {
+    fetcher
+      .get('/auth/resident')
+      .then(res => {
+        console.log('login status:\n> ', JSON.stringify(res.data));
+        setUser(res.data.user);
+      })
+      .catch(err => {
+        setUser(undefined);
+        console.debug(
+          'verify error:\n> ',
+          JSON.stringify(err.response.data.error, undefined, 2),
+        );
+      });
   };
 
   return (
-    <AuthContext.Provider value={{isLoggedIn, login, logout}}>
+    <AuthContext.Provider value={{user, check}}>
       {children}
     </AuthContext.Provider>
   );

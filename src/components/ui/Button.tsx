@@ -29,11 +29,21 @@ export const DEButton = forwardRef<View, Props>((props, ref) => {
 
 const stylesheet = createStyleSheet(t => ({
   button: {
-    backgroundColor: t.colors.gray700,
     borderRadius: t.borderRadii.default,
     variants: {
       ...generateMarginVariants(t),
       ...generatePaddingVariants(t),
+      variant: {
+        default: {
+          backgroundColor: t.colors.gray900,
+        },
+        outline: {
+          borderWidth: 1,
+          backgroundColor: 'transparent',
+          borderColor: t.colors.gray900,
+          color: t.colors.gray900,
+        },
+      },
       fullWidth: {
         true: {
           alignSelf: 'stretch',
@@ -52,15 +62,22 @@ const stylesheet = createStyleSheet(t => ({
           paddingHorizontal: 16,
         },
         lg: {
-          paddingVertical: 12,
-          paddingHorizontal: 24,
+          paddingVertical: 20,
+          paddingHorizontal: 36,
         },
       },
     },
   },
   text: {
     color: t.colors.gray50,
-    fontSize: t.fontSizes.default,
+    fontWeight: '500',
     textAlign: 'center',
+    variants: {
+      variant: {
+        outline: {
+          color: t.colors.gray900,
+        },
+      },
+    },
   },
 }));

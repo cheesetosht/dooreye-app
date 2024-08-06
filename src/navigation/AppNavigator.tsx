@@ -19,12 +19,12 @@ const MainTabs = () => (
 );
 
 export const AppNavigator = () => {
-  const {isLoggedIn} = useAuth();
+  const {user} = useAuth();
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isLoggedIn ? (
+        {user ? (
           <Stack.Screen
             name="Main"
             component={MainTabs}

@@ -41,7 +41,7 @@ export const useFCM = (userId: number) => {
         });
         return unsubscribe;
       } catch (err) {
-        console.error('Error setting up FCM token:', err);
+        console.debug('Error setting up FCM token:', err);
       }
     };
 
