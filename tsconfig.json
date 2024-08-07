@@ -5,11 +5,13 @@
     "paths": {
       "@": ["src"],
       "@/*": ["src/*"],
-      "@hooks": ["src/hooks"],
-      "@navigation": ["src/navigation"],
-      "@screen": ["src/screen"],
-      "@utils": ["src/utils"],
-      "@services": ["src/services"]
+      "@/hooks": ["src/hooks"],
+      "@/navigation": ["src/navigation"],
+      "@/screen": ["src/screen"],
+      "@/utils": ["src/utils"],
+      "@/services": ["src/services"],
+      "@/adapters": ["src/adapters"],
+      "@/context": ["src/context"]
     }
   }
 }

@@ -1,20 +1,14 @@
-import {fetcher} from '@/adapters';
+import {Auth} from '@/adapters/requests';
 import {DEButton} from '@/components/ui/Button';
 import {DETextInput} from '@/components/ui/TextInput';
 import {DETypography} from '@/components/ui/Typography';
+import {useAuth} from '@/contexts/AuthContext';
 import {setToken} from '@/utils/auth';
 import React, {useRef, useState} from 'react';
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
+import {Keyboard, KeyboardAvoidingView, Text} from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {createStyleSheet, useStyles} from 'react-native-unistyles';
-import {useAuth} from '../contexts/AuthContext';
 
 export const LoginScreen = () => {
   const {check} = useAuth();
@@ -25,14 +19,14 @@ export const LoginScreen = () => {
 
   const handlePhoneNumberSubmit = () => {
     console.log('phone number:\n> ', phoneNumberInputRef.current?.value);
-    fetcher
-      .post('/auth/request-otp', {
-        phone_number: phoneNumberInputRef.current?.value,
-      })
+    Auth.requestOTP({phone_number: phoneNumberInputRef.current?.value})
       .then(res => {
         Keyboard.dismiss();
         setPhoneNumber(phoneNumberInputRef.current?.value);
-        console.log('request otp:\n> ', JSON.stringify(res.data));
+        console.info(
+          'request otp:\n> ',
+          JSON.stringify(res.data, undefined, 2),
+        );
       })
       .catch(err => {
         console.debug(
@@ -42,22 +36,18 @@ export const LoginScreen = () => {
       });
   };
   const handleOTPSubmit = () => {
-    console.log('otp:\n> ', otpInputRef.current.value);
-    fetcher
-      .post('/auth/verify-otp', {
-        phone_number: phoneNumber,
-        otp: otpInputRef.current?.value,
-      })
+    console.info('otp:\n> ', otpInputRef.current.value);
+    Auth.verifyOTP({phone_number: phoneNumber}, otpInputRef.current?.value)
       .then(res => {
         Keyboard.dismiss();
         setToken(res.data.token);
         check();
-        console.log('verify otp:\n> ', JSON.stringify(res.data));
+        console.log('verify otp:\n> ', JSON.stringify(res.data, undefined, 2));
       })
       .catch(err => {
         console.debug(
           'verify otp error:\n> ',
-          JSON.stringify(err.response.data, undefined, 2),
+          JSON.stringify(err.response?.data, undefined, 2),
         );
       });
   };

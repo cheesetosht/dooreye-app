@@ -1,8 +1,14 @@
+import {DETypography} from '@/components/ui/Typography';
+import {useAuth} from '@/contexts/AuthContext';
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 
-export const HomeScreen = () => (
-  <View>
-    <Text>Home Screen</Text>
-  </View>
-);
+export const HomeScreen = () => {
+  const {user} = useAuth();
+  return (
+    <View>
+      <DETypography look={{size: 'lg'}}>{user?.name}</DETypography>
+      <DETypography look={{size: 'lg'}}>{user?.society_name}</DETypography>
+    </View>
+  );
+};

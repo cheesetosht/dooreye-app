@@ -14,7 +14,6 @@ dooreyeAxios.interceptors.request.use(
   async config => {
     const token = await getToken();
     if (token) {
-      console.log('APPEND>>');
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -29,12 +28,12 @@ const getResponseBody = (response: AxiosResponse) => response.data;
 
 // This object should be used for all REST calls to OUR Backend
 export const fetcher = {
-  get: (url: string, params?: {}) =>
-    dooreyeAxios.get(url, {params}).then(getResponseBody),
-  post: (url: string, body: {}) =>
-    dooreyeAxios.post(url, body).then(getResponseBody),
-  put: (url: string, body: {}) =>
-    dooreyeAxios.put(url, body).then(getResponseBody),
-  delete: (url: string, body: {}) =>
-    dooreyeAxios.delete(url, {data: body}).then(getResponseBody),
+  get: <T>(url: string, params?: {}): Promise<T> =>
+    dooreyeAxios.get<T>(url, {params}).then(getResponseBody),
+  post: <T>(url: string, body: {}): Promise<T> =>
+    dooreyeAxios.post<T>(url, body).then(getResponseBody),
+  put: <T>(url: string, body: {}): Promise<T> =>
+    dooreyeAxios.put<T>(url, body).then(getResponseBody),
+  delete: <T>(url: string, body: {}): Promise<T> =>
+    dooreyeAxios.delete<T>(url, {data: body}).then(getResponseBody),
 };

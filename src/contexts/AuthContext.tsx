@@ -1,21 +1,22 @@
+import {Auth} from '@/adapters/requests';
+import {UserInfo} from '@/adapters/types';
 import React, {
   createContext,
-  useState,
+  PropsWithChildren,
   useContext,
   useEffect,
-  PropsWithChildren,
+  useState,
 } from 'react';
-import {fetcher} from '@/adapters';
 
 type AuthContextType = {
-  user: any;
   check: () => void;
+  user?: UserInfo;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<UserInfo>();
 
   useEffect(() => {
     // Check for the token when the app loads
@@ -23,17 +24,16 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
   }, []);
 
   const check = () => {
-    fetcher
-      .get('/auth/resident')
+    Auth.verifyResident()
       .then(res => {
-        console.log('login status:\n> ', JSON.stringify(res.data));
-        setUser(res.data.user);
+        console.info('user info:\n> ', JSON.stringify(res.data));
+        setUser(res.data.user_info);
       })
       .catch(err => {
         setUser(undefined);
         console.debug(
           'verify error:\n> ',
-          JSON.stringify(err.response.data.error, undefined, 2),
+          JSON.stringify(err.response.data, undefined, 2),
         );
       });
   };
